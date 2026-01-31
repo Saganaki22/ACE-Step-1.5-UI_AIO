@@ -916,7 +916,13 @@ def setup_training_event_handlers(demo, dit_handler, llm_handler, training_secti
             training_section["edit_duration"],
             training_section["edit_language"],
             training_section["edit_instrumental"],
+            training_section["raw_lyrics_display"],
+            training_section["has_raw_lyrics_state"],
         ]
+    ).then(
+        fn=lambda has_raw: gr.update(visible=has_raw),
+        inputs=[training_section["has_raw_lyrics_state"]],
+        outputs=[training_section["raw_lyrics_display"]],
     )
     
     # ========== Dataset Builder Handlers ==========
@@ -991,34 +997,14 @@ def setup_training_event_handlers(demo, dit_handler, llm_handler, training_secti
             training_section["edit_duration"],
             training_section["edit_language"],
             training_section["edit_instrumental"],
-            training_section["raw_lyrics_state"],
-            training_section["formatted_lyrics_state"],
-            training_section["lyrics_has_both"],
+            training_section["raw_lyrics_display"],
+            training_section["has_raw_lyrics_state"],
         ]
     ).then(
-        # Update toggle button visibility and reset view state based on whether both lyrics exist
-        fn=lambda has_both: (gr.update(visible=has_both), "formatted"),
-        inputs=[training_section["lyrics_has_both"]],
-        outputs=[
-            training_section["lyrics_toggle_btn"],
-            training_section["lyrics_view_state"],
-        ]
-    )
-
-    # Lyrics toggle button - switch between raw and formatted lyrics
-    training_section["lyrics_toggle_btn"].click(
-        fn=train_h.toggle_lyrics_view,
-        inputs=[
-            training_section["lyrics_view_state"],
-            training_section["raw_lyrics_state"],
-            training_section["formatted_lyrics_state"],
-            training_section["edit_lyrics"],
-        ],
-        outputs=[
-            training_section["edit_lyrics"],
-            training_section["lyrics_view_state"],
-            training_section["lyrics_toggle_btn"],
-        ]
+        # Show/hide raw lyrics panel based on whether raw lyrics exist
+        fn=lambda has_raw: gr.update(visible=has_raw),
+        inputs=[training_section["has_raw_lyrics_state"]],
+        outputs=[training_section["raw_lyrics_display"]],
     )
     
     # Save sample edit
@@ -1092,7 +1078,13 @@ def setup_training_event_handlers(demo, dit_handler, llm_handler, training_secti
             training_section["edit_duration"],
             training_section["edit_language"],
             training_section["edit_instrumental"],
+            training_section["raw_lyrics_display"],
+            training_section["has_raw_lyrics_state"],
         ]
+    ).then(
+        fn=lambda has_raw: gr.update(visible=has_raw),
+        inputs=[training_section["has_raw_lyrics_state"]],
+        outputs=[training_section["raw_lyrics_display"]],
     )
     
     # Preprocess dataset to tensor files

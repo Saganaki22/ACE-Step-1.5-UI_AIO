@@ -194,23 +194,19 @@ def create_training_section(dit_handler, llm_handler, init_params=None) -> dict:
                             )
 
                         with gr.Row():
-                            with gr.Column(scale=4):
-                                edit_lyrics = gr.Textbox(
-                                    label="Lyrics",
-                                    lines=4,
-                                    placeholder="[Verse 1]\nLyrics here...\n\n[Chorus]\n...",
-                                )
-                            with gr.Column(scale=1):
-                                lyrics_toggle_btn = gr.Button(
-                                    "📝 Raw",
-                                    variant="secondary",
-                                    size="sm",
-                                    visible=False,  # Only show when both versions exist
-                                )
-                                lyrics_view_state = gr.State("formatted")  # Track which view is shown
-                                lyrics_has_both = gr.State(False)  # Track if both versions exist
-                                raw_lyrics_state = gr.State("")  # Store raw lyrics
-                                formatted_lyrics_state = gr.State("")  # Store formatted lyrics
+                            edit_lyrics = gr.Textbox(
+                                label="Lyrics (editable, used for training)",
+                                lines=6,
+                                placeholder="[Verse 1]\nLyrics here...\n\n[Chorus]\n...",
+                            )
+                            raw_lyrics_display = gr.Textbox(
+                                label="Raw Lyrics (from .txt file)",
+                                lines=6,
+                                placeholder="(no .txt lyrics file)",
+                                interactive=False,  # Read-only, can copy but not edit
+                                visible=False,  # Hidden when no raw lyrics
+                            )
+                            has_raw_lyrics_state = gr.State(False)  # Track visibility
                         
                         with gr.Row():
                             edit_bpm = gr.Number(
@@ -534,11 +530,8 @@ def create_training_section(dit_handler, llm_handler, init_params=None) -> dict:
         "preview_filename": preview_filename,
         "edit_caption": edit_caption,
         "edit_lyrics": edit_lyrics,
-        "lyrics_toggle_btn": lyrics_toggle_btn,
-        "lyrics_view_state": lyrics_view_state,
-        "lyrics_has_both": lyrics_has_both,
-        "raw_lyrics_state": raw_lyrics_state,
-        "formatted_lyrics_state": formatted_lyrics_state,
+        "raw_lyrics_display": raw_lyrics_display,
+        "has_raw_lyrics_state": has_raw_lyrics_state,
         "edit_bpm": edit_bpm,
         "edit_keyscale": edit_keyscale,
         "edit_timesig": edit_timesig,

@@ -146,32 +146,35 @@ def auto_label_all(
 def get_sample_preview(
     sample_idx: int,
     builder_state: Optional[DatasetBuilder],
-) -> Tuple[str, str, str, str, Optional[int], str, str, float, str, bool, str, str, bool]:
+):
     """Get preview data for a specific sample.
 
     Returns:
-        Tuple of (audio_path, filename, caption, lyrics, bpm, keyscale, timesig, duration, language, instrumental, raw_lyrics, formatted_lyrics, has_both_lyrics)
+        Tuple of (audio_path, filename, caption, lyrics, bpm, keyscale, timesig,
+                  duration, language, instrumental, raw_lyrics, raw_lyrics_visible)
     """
+    empty = (None, "", "", "", None, "", "", 0.0, "instrumental", True, "", False)
+
     if builder_state is None or not builder_state.samples:
-        return None, "", "", "", None, "", "", 0.0, "instrumental", True, "", "", False
+        return empty
 
     idx = int(sample_idx)
     if idx < 0 or idx >= len(builder_state.samples):
-        return None, "", "", "", None, "", "", 0.0, "instrumental", True, "", "", False
+        return empty
 
     sample = builder_state.samples[idx]
-
-    # Check if both raw and formatted lyrics exist
-    has_both = sample.has_raw_lyrics() and sample.has_formatted_lyrics()
 
     # Get caption with custom tag applied based on tag_position setting
     tag_position = builder_state.metadata.tag_position if builder_state.metadata else "prepend"
     full_caption = sample.get_full_caption(tag_position)
 
+    # Show raw lyrics panel only when raw lyrics exist
+    has_raw = sample.has_raw_lyrics()
+
     return (
         sample.audio_path,
         sample.filename,
-        full_caption,  # Use full caption with custom tag applied
+        full_caption,
         sample.lyrics,
         sample.bpm,
         sample.keyscale,
@@ -179,35 +182,9 @@ def get_sample_preview(
         sample.duration,
         sample.language,
         sample.is_instrumental,
-        sample.raw_lyrics,
-        sample.formatted_lyrics,
-        has_both,
+        sample.raw_lyrics if has_raw else "",
+        has_raw,  # Controls raw_lyrics_display visibility
     )
-
-
-def toggle_lyrics_view(
-    current_view: str,
-    raw_lyrics: str,
-    formatted_lyrics: str,
-    current_lyrics: str,
-) -> Tuple[str, str, str]:
-    """Toggle between raw and formatted lyrics view.
-
-    Args:
-        current_view: Current view state ("raw" or "formatted")
-        raw_lyrics: Original user-provided lyrics
-        formatted_lyrics: LM-formatted lyrics
-        current_lyrics: Currently displayed lyrics
-
-    Returns:
-        Tuple of (new_lyrics_display, new_view_state, new_button_label)
-    """
-    if current_view == "formatted":
-        # Switch to raw
-        return raw_lyrics, "raw", "📋 Formatted"
-    else:
-        # Switch to formatted
-        return formatted_lyrics, "formatted", "📝 Raw"
 
 
 def save_sample_edit(
@@ -302,54 +279,59 @@ def save_dataset(
 def load_existing_dataset_for_preprocess(
     dataset_path: str,
     builder_state: Optional[DatasetBuilder],
-) -> Tuple[str, Any, Any, DatasetBuilder, str, str, str, str, Optional[int], str, str, float, str, bool]:
+):
     """Load an existing dataset JSON file for preprocessing.
-    
+
     This allows users to load a previously saved dataset and proceed to preprocessing
     without having to re-scan and re-label.
-    
+
     Returns:
-        Tuple of (status, table_data, slider_update, builder_state, 
-                  audio_path, filename, caption, lyrics, bpm, keyscale, timesig, duration, language, instrumental)
+        Tuple of (status, table_data, slider_update, builder_state,
+                  audio_path, filename, caption, lyrics, bpm, keyscale, timesig,
+                  duration, language, instrumental, raw_lyrics, has_raw)
     """
-    empty_preview = (None, "", "", "", None, "", "", 0.0, "instrumental", True)
-    
+    empty_preview = (None, "", "", "", None, "", "", 0.0, "instrumental", True, "", False)
+
     if not dataset_path or not dataset_path.strip():
         return ("❌ Please enter a dataset path", [], gr.Slider(maximum=0, value=0), builder_state) + empty_preview
-    
+
     dataset_path = dataset_path.strip()
-    
+
     if not os.path.exists(dataset_path):
         return (f"❌ Dataset not found: {dataset_path}", [], gr.Slider(maximum=0, value=0), builder_state) + empty_preview
-    
+
     # Create new builder (don't reuse old state when loading a file)
     builder = DatasetBuilder()
-    
+
     # Load the dataset
     samples, status = builder.load_dataset(dataset_path)
-    
+
     if not samples:
         return (status, [], gr.Slider(maximum=0, value=0), builder) + empty_preview
-    
+
     # Get table data
     table_data = builder.get_samples_dataframe_data()
-    
+
     # Calculate slider max
     slider_max = max(0, len(samples) - 1)
-    
+
     # Create info text
     labeled_count = builder.get_labeled_count()
     info = f"✅ Loaded dataset: {builder.metadata.name}\n"
     info += f"📊 Samples: {len(samples)} ({labeled_count} labeled)\n"
     info += f"🏷️ Custom Tag: {builder.metadata.custom_tag or '(none)'}\n"
     info += "📝 Ready for preprocessing! You can also edit samples below."
-    
+
     # Get first sample preview
     first_sample = builder.samples[0]
+    has_raw = first_sample.has_raw_lyrics()
+    tag_position = builder.metadata.tag_position if builder.metadata else "prepend"
+    full_caption = first_sample.get_full_caption(tag_position)
+
     preview = (
         first_sample.audio_path,
         first_sample.filename,
-        first_sample.caption,
+        full_caption,
         first_sample.lyrics,
         first_sample.bpm,
         first_sample.keyscale,
@@ -357,8 +339,10 @@ def load_existing_dataset_for_preprocess(
         first_sample.duration,
         first_sample.language,
         first_sample.is_instrumental,
+        first_sample.raw_lyrics if has_raw else "",
+        has_raw,
     )
-    
+
     return (info, table_data, gr.Slider(maximum=slider_max, value=0), builder) + preview
 
 
