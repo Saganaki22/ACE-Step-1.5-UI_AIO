@@ -61,7 +61,7 @@ if /i "%CHECK_UPDATE%"=="true" (
                 echo.
             ) else if !UPDATE_CHECK_RESULT! EQU 2 (
                 echo.
-                echo [Info] Update check skipped (network timeout).
+                echo [Info] Update check skipped (network timeout^).
                 echo Continuing with startup...
                 echo.
             )
