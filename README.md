@@ -131,7 +131,6 @@ After completion, the installer automatically launches:
 - **Backend** (Port 3001)  
 - **Frontend** (Port 3000)
 
-<<<<<<< HEAD
 ### 🛑 Stopping the Application
 
 If you need to stop all processes or are having port conflicts, run:
@@ -142,8 +141,6 @@ stop-all.bat
 
 This will kill all processes on ports 3000-3008 and 8000-8008.
 
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 ---
 
 ## ✨ Features
@@ -158,7 +155,6 @@ This will kill all processes on ports 3000-3008 and 8000-8008.
 | **Batch Generation** | Generate multiple variations at once |
 | **Thinking Mode** | Let AI enhance your prompts automatically (requires 12GB+ VRAM) |
 
-<<<<<<< HEAD
 ### 🤖 Gemini AI Integration (New in v0.1.1)
 **Optional AI-powered features** - Works without API keys, but enhanced with them:
 
@@ -172,8 +168,6 @@ This will kill all processes on ports 3000-3008 and 8000-8008.
 
 **Note:** These features are **completely optional**. The app works perfectly without Gemini - you can still generate music normally in Simple Mode or write your own lyrics in Custom Mode. Gemini just adds AI-assisted convenience!
 
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 ### 🎨 Advanced Parameters
 | Feature | Description |
 |---------|-------------|
@@ -226,10 +220,7 @@ This will kill all processes on ports 3000-3008 and 8000-8008.
 | **Frontend** | React 18, TypeScript, TailwindCSS, Vite |
 | **Backend** | Express.js, SQLite, better-sqlite3 |
 | **AI Engine** | [ACE-Step 1.5](https://github.com/ace-step/ACE-Step-1.5) |
-<<<<<<< HEAD
 | **AI Assistant** | Google Gemini API |
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 | **Audio Tools** | AudioMass, Demucs, FFmpeg |
 
 ---
@@ -243,7 +234,6 @@ Once installed via the AIO package:
 3. Open **http://localhost:3000** in your browser
 4. Start generating!
 
-<<<<<<< HEAD
 **Using Gemini AI Features:**
 1. Get a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. Add it to your `.env` file: `GEMINI_API_KEY=your_key_here`
@@ -251,15 +241,12 @@ Once installed via the AIO package:
 4. Enter a song description and click "AI Generate"
 5. Or use the sparkles ✨ button in Custom Mode to enhance existing lyrics/style
 
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 **Access from other devices on your LAN:**
 - Find your PC's IP address
 - Access via `http://YOUR_IP:3000`
 
 ---
 
-<<<<<<< HEAD
 ## ⚙️ Configuration
 
 ### Environment Variables
@@ -340,8 +327,6 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 ---
 
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 ## 🐛 Troubleshooting
 
 | Issue | Solution |
@@ -352,11 +337,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 | **Port conflicts** | Ensure ports 3000, 3001, and 8001 are not in use by other applications |
 | **Antivirus blocks** | Add exception for the installation directory |
 | **Songs show 0:00 duration** | Install FFmpeg if not using the AIO package |
-<<<<<<< HEAD
 | **Gemini API errors** | Check your API key in `.env` file and ensure you have internet connection |
-=======
-
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 
 ---
 
@@ -376,10 +357,7 @@ This AIO installer combines two amazing open source projects:
 - **[AudioMass](https://github.com/pkalogiros/AudioMass)** - Web audio editor
 - **[Demucs](https://github.com/facebookresearch/demucs)** - Audio source separation
 - **[Pexels](https://www.pexels.com)** - Stock video backgrounds
-<<<<<<< HEAD
 - **[Google Gemini](https://ai.google.dev/)** - AI-powered lyrics and style generation
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 
 ---
 
@@ -390,7 +368,6 @@ This project is open source under the [MIT License](LICENSE).
 **Note**: This AIO installer is a community convenience package. All credit for the AI model goes to the ACE-Step team, and all credit for the UI goes to the ACE-Step UI team.
 
 ---
-<<<<<<< HEAD
 
 ## 📝 Changelog
 
@@ -403,12 +380,8 @@ This project is open source under the [MIT License](LICENSE).
 - 📝 Detailed style descriptions (200-300 characters) with rich tags
 - 🔄 Retry logic with exponential backoff for API reliability
 - 🔔 Toast notifications for better user feedback
-- 🌏 Added Chinese README (Readme_zh.md)
-- 🛑 Added stop-all.bat for killing processes on ports 3000-3008 and 8000-8008
 
 ---
-=======
->>>>>>> caf95a2bd6cfdbc840e3821a0498e109280b1fa1
 
 <p align="center">
   <strong>⭐ If this AIO installer helps you create amazing music, please star the repo! ⭐</strong>
