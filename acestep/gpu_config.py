@@ -137,6 +137,11 @@ def get_gpu_memory_gb() -> float:
             total_memory = torch.cuda.get_device_properties(0).total_memory
             memory_gb = total_memory / (1024**3)  # Convert bytes to GB
             return memory_gb
+        elif hasattr(torch, 'xpu') and torch.xpu.is_available():
+            # Get total memory of the first XPU in GB
+            total_memory = torch.xpu.get_device_properties(0).total_memory
+            memory_gb = total_memory / (1024**3)  # Convert bytes to GB
+            return memory_gb
         else:
             return 0
     except Exception as e:
